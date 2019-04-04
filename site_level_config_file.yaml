@@ -1,16 +1,16 @@
 vars:
-  - &spark_master_ip_address 188.184.95.231
-  - &spark_worker_ip_address 188.184.104.92
-  - &spark_submit_ip_address 188.185.82.126
+  - &spark_master_ip_address 188.184.104.25
+  - &spark_worker_ip_address 188.184.30.19
+  - &spark_submit_ip_address 188.185.30.19
 
 spark_master_runtime_variables:
-  - &master_runtime_var_host spark-master.cern.ch
+  - &master_runtime_var_host simple-lc01.cern.ch
 
 spark_worker_runtime_variables:
-  - &worker_runtime_var_host spark-worker.cern.ch
+  - &worker_runtime_var_host simple-lc02.cern.ch
 
 spark_submit_runtime_variables:
-  - &submit_runtime_var_host spark-submit.cern.ch
+  - &submit_runtime_var_host simple-lc02.cern.ch
 
 preferred_tech_stack:
   level_1_configuration: puppet
@@ -55,7 +55,7 @@ lightweight_components:
     config:
         host: *worker_runtime_var_host
         enable_init_daemon: false
-        SPARK_MASTER: spark://spark-master:7077
+        SPARK_MASTER: spark://spark-master.cern.ch:7077
     supplemental_config:
       "spark-defaults.conf":
         - "spark.memory.fraction 0.75"
@@ -73,7 +73,7 @@ lightweight_components:
     config:
         spark_master: *submit_runtime_var_host
         enable_init_daemon: false
-        SPARK_MASTER: spark://spark-master:7077
+        SPARK_MASTER: spark://spark-master.cern.ch:7077
     supplemental_config:
       "spark-defaults.conf":
         - "spark.memory.fraction 0.75"
