@@ -1,7 +1,7 @@
 vars:
   - &spark_master_ip_address 188.184.104.25
   - &spark_worker_ip_address 188.184.30.19
-  - &spark_submit_ip_address 188.185.30.19
+  - &spark_submit_ip_address 188.185.84.189
 
 spark_master_runtime_variables:
   - &master_runtime_var_host simple-lc01.cern.ch
@@ -10,7 +10,7 @@ spark_worker_runtime_variables:
   - &worker_runtime_var_host simple-lc02.cern.ch
 
 spark_submit_runtime_variables:
-  - &submit_runtime_var_host simple-lc02.cern.ch
+  - &submit_runtime_var_host simple-lc03.cern.ch
 
 preferred_tech_stack:
   level_1_configuration: puppet
