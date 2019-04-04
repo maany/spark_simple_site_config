@@ -19,17 +19,17 @@ preferred_tech_stack:
   container: docker
 
 site_infrastructure:
-  - fqdn: spark-master.cern.ch
+  - fqdn: simple-lc01.cern.ch
     ip_address: *spark_master_ip_address
-  - fqdn: spark-worker.cern.ch
+  - fqdn: simple-lc02.cern.ch
     ip_address: *spark_worker_ip_address
-  - fqdn: spark-submit.cern.ch
+  - fqdn: simple-lc03.cern.ch
     ip_address: *spark_submit_ip_address
 
 lightweight_components:
   - type: spark_master
     name: spark-master
-    repository_url: "https://github.com/JuliaGavrilenko/spark_master"
+    repository_url: "https://github.com/maany/spark_master"
     repository_revision: "master"
     execution_id: 0
     deploy:
@@ -46,7 +46,7 @@ lightweight_components:
 
   - name: spark-worker
     type: spark_worker
-    repository_url: "https://github.com/JuliaGavrilenko/spark_worker"
+    repository_url: "https://github.com/maany/spark_worker"
     repository_revision: "master"
     execution_id: 1
     deploy:
@@ -64,7 +64,7 @@ lightweight_components:
 
   - name: spark-submit
     type: spark_submit
-    repository_url: "https://github.com/JuliaGavrilenko/spark_submit"
+    repository_url: "https://github.com/maany/spark_submit"
     repository_revision: "master"
     execution_id: 2
     deploy:
