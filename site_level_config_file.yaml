@@ -33,7 +33,7 @@ lightweight_components:
     repository_revision: "master"
     execution_id: 0
     deploy:
-      - node: spark-master.cern.ch
+      - node: simple-lc01.cern.ch
         container_count: 1
     config:
         host: *master_runtime_var_host
@@ -50,7 +50,7 @@ lightweight_components:
     repository_revision: "master"
     execution_id: 1
     deploy:
-      - node: spark-worker.cern.ch
+      - node: simple-lc02.cern.ch
         container_count: 1
     config:
         host: *worker_runtime_var_host
@@ -68,7 +68,7 @@ lightweight_components:
     repository_revision: "master"
     execution_id: 2
     deploy:
-      - node: spark-submit.cern.ch
+      - node: simple-lc03.cern.ch
         container_count: 1
     config:
         spark_master: *submit_runtime_var_host
