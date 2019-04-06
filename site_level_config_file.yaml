@@ -1,16 +1,24 @@
-vars:
+global_variables:
   - &spark_master_ip_address 188.184.104.25
+  - &spark_master_fqdn simple-lc01.cern.ch
   - &spark_worker_ip_address 188.184.30.19
+  - &spark_worker_fqdn simple-lc02.cern.ch
   - &spark_submit_ip_address 188.185.84.189
+  - &spark_submit_fqdn simple-lc03.cern.ch
 
 spark_master_runtime_variables:
-  - &master_runtime_var_host simple-lc01.cern.ch
+  - &spark_master_runtime_var_host 
+    __from__: *spark_master_fqdn
 
 spark_worker_runtime_variables:
-  - &worker_runtime_var_host simple-lc02.cern.ch
+  - &spark_worker_runtime_var_host 
+    __from__: *spark_worker_fqdn
+  - &spark_worker_runtime_var_spark_master 
+    __from__: *spark_master_fqdn
 
 spark_submit_runtime_variables:
-  - &submit_runtime_var_host simple-lc03.cern.ch
+  - &spark_submit_runtime_var_spark_master 
+    __from__: *spark_submit_fqdn
 
 preferred_tech_stack:
   level_1_configuration: puppet
@@ -19,11 +27,11 @@ preferred_tech_stack:
   container: docker
 
 site_infrastructure:
-  - fqdn: simple-lc01.cern.ch
+  - fqdn: *spark_master_fqdn
     ip_address: *spark_master_ip_address
-  - fqdn: simple-lc02.cern.ch
+  - fqdn: *spark_worker_fqdn
     ip_address: *spark_worker_ip_address
-  - fqdn: simple-lc03.cern.ch
+  - fqdn: *spark_submit_fqdn
     ip_address: *spark_submit_ip_address
 
 lightweight_components:
@@ -33,10 +41,9 @@ lightweight_components:
     repository_revision: "master"
     execution_id: 0
     deploy:
-      - node: simple-lc01.cern.ch
+      - node: *spark_master_fqdn
         container_count: 1
     config:
-        host: *master_runtime_var_host
         enable_init_daemon: false
     supplemental_config:
         "spark-defaults.conf":
@@ -50,17 +57,12 @@ lightweight_components:
     repository_revision: "master"
     execution_id: 1
     deploy:
-      - node: simple-lc02.cern.ch
+      - node: *spark_worker_fqdn
         container_count: 1
     config:
-        host: *worker_runtime_var_host
         enable_init_daemon: false
-        SPARK_MASTER: spark://spark-master.cern.ch:7077
+        spark_master: *spark_master_fqdn
     supplemental_config:
-      "spark-defaults.conf":
-        - "spark.memory.fraction 0.75"
-        - "spark.executor.memory 1g"
-        - "spark.driver.cores 1"
 
   - name: spark-submit
     type: spark_submit
@@ -68,14 +70,7 @@ lightweight_components:
     repository_revision: "master"
     execution_id: 2
     deploy:
-      - node: simple-lc03.cern.ch
+      - node: *spark_submit_fqdn
         container_count: 1
     config:
-        spark_master: *submit_runtime_var_host
         enable_init_daemon: false
-        SPARK_MASTER: spark://spark-master.cern.ch:7077
-    supplemental_config:
-      "spark-defaults.conf":
-        - "spark.memory.fraction 0.75"
-        - "spark.executor.memory 1g"
-        - "spark.driver.cores 1"
